@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ZEUS &mdash; a web slot machine recreation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A photorealistic, physics-driven, fully sounded recreation of the classic Zeus slot machine in plain HTML5 Canvas and Web Audio.">
+<meta property="og:title" content="ZEUS — web slot machine recreation">
+<meta property="og:description" content="5 reels, 30 lines, 10/25/100 free spins, real reel physics and synthesized sound. Play in the browser.">
+<meta property="og:image" content="screenshots/hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --gold: #e9c250; --gold-2: #b8860b; --ink: #0a0a10; --paper: #f3e2b0; --muted: #b7a77a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(ellipse at 50% 0%, #1d1f33 0%, #06070c 60%); color: var(--paper); font-family: Inter, system-ui, sans-serif; line-height: 1.55; }
+  a { color: var(--gold); }
+  header { text-align: center; padding: 56px 20px 24px; }
+  header img.logo { width: min(640px, 90vw); filter: drop-shadow(0 0 30px rgba(255,200,90,.35)); }
+  header p.tag { font-family: Cinzel, serif; letter-spacing: 6px; color: var(--muted); margin: 14px 0 28px; font-size: 15px; text-transform: uppercase; }
+  .cta { display: inline-block; padding: 16px 40px; border-radius: 999px; font-family: Cinzel, serif; font-weight: 900; letter-spacing: 3px; color: #3a2606; text-decoration: none;
+    background: linear-gradient(180deg, #fff3bd, #e9c250 35%, #b8860b 80%); box-shadow: 0 6px 0 #5a3d08, 0 14px 30px rgba(0,0,0,.6); }
+  .cta:hover { filter: brightness(1.08); }
+  .hero { display: block; width: min(1200px, 94vw); margin: 40px auto 0; border-radius: 14px; border: 2px solid #4a3b14; box-shadow: 0 30px 80px rgba(0,0,0,.8); }
+  main { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
+  h2 { font-family: Cinzel, serif; color: var(--gold); letter-spacing: 3px; font-size: 26px; margin: 56px 0 18px; border-bottom: 1px solid #3a3012; padding-bottom: 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .card { background: rgba(255,255,255,.03); border: 1px solid #3a3012; border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-family: Cinzel, serif; color: #ffe9a8; font-size: 17px; letter-spacing: 1px; }
+  .card p { margin: 0; color: #d9ccaa; font-size: 15px; }
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 22px; }
+  figure { margin: 0; }
+  figure img { width: 100%; border-radius: 10px; border: 1px solid #3a3012; box-shadow: 0 12px 30px rgba(0,0,0,.6); }
+  figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  td, th { border-bottom: 1px solid #2a2410; padding: 8px 10px; text-align: left; }
+  th { color: var(--gold); font-family: Cinzel, serif; letter-spacing: 1px; font-weight: 700; }
+  footer { text-align: center; color: #7d6a3a; font-size: 13px; padding: 30px 20px 60px; }
+  code { background: #15131c; padding: 2px 6px; border-radius: 4px; color: #ffe9a8; }
+</style>
+</head>
+<body>
+<header>
+  <img class="logo" src="../assets/logo.png" alt="ZEUS">
+  <p class="tag">King of the gods &middot; 5 reels &middot; 30 lines &middot; 100 free spins</p>
+  <a class="cta" href="../index.html">PLAY IN YOUR BROWSER</a>
+  <img class="hero" src="screenshots/hero.jpg" alt="The Zeus reels with stacked Zeus, Wild temple and the golden bezel">
+</header>
+<main>
+  <h2>What it is</h2>
+  <p>An unofficial, play-money recreation of the classic WMS <em>Zeus</em> slot machine, written in plain HTML5 Canvas,
+    Web Audio and vanilla JavaScript. No frameworks, no build step, no server-side code &mdash; it runs from any static
+    web host or straight from disk. The reel strips reproduce the original paytable and return 95.96% in theory
+    (69.1% base game + 26.9% free spins), with the feature landing about once every 101 spins.</p>
+
+  <h2>Features</h2>
+  <div class="grid">
+    <div class="card"><h3>Real reel physics</h3><p>Pull-back wind-up, acceleration, blurred full-speed spin, constant deceleration, an overshoot and a damped-spring bounce onto the stop. Slam the reels with the spin button.</p></div>
+    <div class="card"><h3>Anticipation</h3><p>When two FEATURE symbols have landed the remaining reels spin on with a rising drone, heartbeat thumps and a crackling blue glow.</p></div>
+    <div class="card"><h3>Free spins</h3><p>3 / 4 / 5 FEATURE symbols award 10 / 25 / 100 free spins on a storm-lit second reel set with stacked Zeus and stacked Wilds. Retriggers add more.</p></div>
+    <div class="card"><h3>Photoreal presentation</h3><p>Cylindrical drum projection, speed-dependent motion blur, drum lighting and glass reflections, animated winning symbols, payline sweeps, procedural lightning and coin showers.</p></div>
+    <div class="card"><h3>Fully synthesized sound</h3><p>Reel whir and ticks, mechanical stops, thunder, harp plucks, bells, brass fanfares, roll-up counters and two looping music beds &mdash; all generated live in Web Audio.</p></div>
+    <div class="card"><h3>Verified mathematics</h3><p>An exact RTP calculator and a Monte-Carlo checker ship with the game, so the reel strips can be tuned and audited.</p></div>
+  </div>
+
+  <h2>Screenshots</h2>
+  <div class="shots">
+    <figure><img src="screenshots/base.jpg" alt="Base game"><figcaption>Base game on Mount Olympus with the betting panel.</figcaption></figure>
+    <figure><img src="screenshots/spin.jpg" alt="Reels spinning"><figcaption>Reels at full speed with motion blur.</figcaption></figure>
+    <figure><img src="screenshots/win.jpg" alt="Line win"><figcaption>A line win: non-winning symbols dim, the payline glows and the win rolls up.</figcaption></figure>
+    <figure><img src="screenshots/bigwin.jpg" alt="Epic win"><figcaption>A full screen of Zeus pays 500&times; the bet &mdash; EPIC WIN with lightning and coins.</figcaption></figure>
+    <figure><img src="screenshots/feature.jpg" alt="Feature triggered"><figcaption>Three FEATURE symbols trigger 10 free spins.</figcaption></figure>
+    <figure><img src="screenshots/freespins.jpg" alt="Free spins"><figcaption>Free spins under a thunderstorm with the feature meters.</figcaption></figure>
+    <figure><img src="screenshots/summary.jpg" alt="Free spins complete"><figcaption>Free spins summary.</figcaption></figure>
+    <figure><img src="screenshots/paytable.jpg" alt="Paytable"><figcaption>Pays and rules.</figcaption></figure>
+  </div>
+
+  <h2>Controls</h2>
+  <table>
+    <tr><th>Action</th><th>Mouse</th><th>Keyboard</th></tr>
+    <tr><td>Spin / slam-stop / skip</td><td>SPIN</td><td><code>Space</code> or <code>Enter</code></td></tr>
+    <tr><td>Bet per line</td><td>&minus; / +</td><td><code>&uarr;</code> / <code>&darr;</code></td></tr>
+    <tr><td>Lines</td><td>&minus; / +</td><td><code>&larr;</code> / <code>&rarr;</code></td></tr>
+    <tr><td>Max bet and spin</td><td>MAX BET</td><td><code>X</code></td></tr>
+    <tr><td>Autoplay</td><td>AUTO</td><td><code>A</code></td></tr>
+    <tr><td>Paytable</td><td>i</td><td><code>I</code> or <code>P</code></td></tr>
+    <tr><td>Mute</td><td>speaker</td><td><code>M</code></td></tr>
+    <tr><td>Add 1,000 play credits</td><td>click the CREDITS meter</td><td>&mdash;</td></tr>
+  </table>
+
+  <h2>Run it yourself</h2>
+  <p>Download or clone the project and open <code>index.html</code>, or serve the folder with any static server
+    (<code>python -m http.server 8765</code>, or <code>start.cmd</code> on Windows). See the README for the
+    configuration reference, the RTP tools and the screenshot script.</p>
+</main>
+<footer>Unofficial fan recreation for entertainment only &middot; play money, no real wagering &middot; Zeus is a trademark of its owner &middot; artwork generated for this project, all sound synthesized at runtime.</footer>
+</body>
+</html>

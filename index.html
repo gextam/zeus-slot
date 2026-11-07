@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ZEUS &mdash; Slot Machine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+  <canvas id="game" width="1920" height="1080"></canvas>
+
+  <div id="ui">
+    <div class="meter" id="meter-credits" title="Click to add 1,000 play credits"><div class="label">CREDITS</div><div class="value" id="m-credits">0</div></div>
+    <div class="group" id="group-lines">
+      <div class="label">LINES</div>
+      <div class="stepper"><button id="btn-lines-dn" class="btn small">&minus;</button><div class="value" id="m-lines">30</div><button id="btn-lines-up" class="btn small">+</button></div>
+    </div>
+    <div class="group" id="group-bet">
+      <div class="label">BET PER LINE</div>
+      <div class="stepper"><button id="btn-bet-dn" class="btn small">&minus;</button><div class="value" id="m-bet">1</div><button id="btn-bet-up" class="btn small">+</button></div>
+    </div>
+    <div class="meter" id="meter-total"><div class="label">TOTAL BET</div><div class="value" id="m-total">30</div></div>
+    <div class="meter win" id="meter-win"><div class="label">WIN</div><div class="value" id="m-win">0</div></div>
+    <button id="btn-max" class="btn wide">MAX BET</button>
+    <button id="btn-auto" class="btn wide">AUTO</button>
+    <button id="btn-spin" class="btn spin">SPIN</button>
+    <div class="side">
+      <button id="btn-pay" class="btn icon" title="Paytable (I)">i</button>
+      <button id="btn-sound" class="btn icon" title="Mute (M)">&#128266;</button>
+      <input id="vol" type="range" min="0" max="1" step="0.01" title="Volume">
+    </div>
+    <div class="hint">SPACE spin / stop &nbsp;&middot;&nbsp; &uarr;&darr; bet &nbsp;&middot;&nbsp; &larr;&rarr; lines &nbsp;&middot;&nbsp; A auto &nbsp;&middot;&nbsp; X max bet &nbsp;&middot;&nbsp; I paytable &nbsp;&middot;&nbsp; M mute</div>
+  </div>
+
+  <div id="paytable" class="hidden">
+    <div class="panel">
+      <h2>ZEUS &mdash; PAYS &amp; RULES</h2>
+      <div id="pay-body"></div>
+      <button id="pay-close" class="btn wide">CLOSE</button>
+    </div>
+  </div>
+
+  <div id="splash">
+    <div class="inner">
+      <div class="title">ZEUS</div>
+      <div class="sub">KING OF THE GODS</div>
+      <div id="splash-text">LOADING&hellip;</div>
+      <div class="bar"><div id="splash-bar"></div></div>
+      <div class="note">Unofficial fan recreation &middot; play money only &middot; sound on</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/reel.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
