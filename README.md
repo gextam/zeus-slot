@@ -7,7 +7,7 @@
 ![HTML5 Canvas](https://img.shields.io/badge/HTML5-Canvas-e34f26)
 ![Web Audio](https://img.shields.io/badge/Web%20Audio-synthesized-7b61ff)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-success)
-![RTP](https://img.shields.io/badge/theoretical%20RTP-95.96%25-d4af37)
+![RTP](https://img.shields.io/badge/theoretical%20RTP-95.68%25-d4af37)
 ![Play money](https://img.shields.io/badge/play%20money-only-blue)
 
 <img src="docs/screenshots/hero.jpg" alt="Zeus reels with stacked Zeus, the Wild temple and the gold bezel" width="900">
@@ -16,10 +16,11 @@
 
 Plain HTML5 Canvas, Web Audio and vanilla JavaScript. No frameworks, no build
 step, no server-side code: it runs from any static host or straight from disk.
-The reel strips reproduce the original paytable and return **95.96 %** in theory
-(69.1 % base game + 26.9 % free spins); the feature lands about once every 101
-spins. Everything you hear is synthesized live, and every piece of art was
-generated for this project.
+The reel strips reproduce the original paytable. The default *arcade* profile deals the
+feature about once every 41 spins for 5 / 10 / 40 free spins and returns **95.68 %** in theory
+(65.5 % base game + 30.2 % free spins); `?classic=1` restores the original balance of
+10 / 25 / 100 free spins about once every 101 spins at 95.96 %. Everything you hear is
+synthesized live, and every piece of art was generated for this project.
 
 > Unofficial fan recreation for entertainment only. Zeus is a trademark of its
 > owner. Play money, no real wagering.
@@ -50,7 +51,8 @@ generated for this project.
   Vase 250 / 100 / 20 · Gold Coin 200 / 75 / 15 · Silver Coin 200 / 75 / 15 ·
   Laurel Wreath 150 / 50 / 5
 * Temple **WILD** substitutes for every symbol except **FEATURE**
-* 3 / 4 / 5 **FEATURE** symbols anywhere award 10 / 25 / 100 free spins on a second,
+* 3 / 4 / 5 **FEATURE** symbols anywhere award 5 / 10 / 40 free spins (10 / 25 / 100 in the
+  classic profile) on a second,
   storm-lit reel set with stacked Zeus and stacked Wilds; free spins retrigger
 * Stacked Zeus on every reel: a full screen of Zeus pays 500 × the total bet
 * Big / Mega / Epic win celebrations at 15× / 50× / 100× the bet
@@ -129,9 +131,10 @@ All tuning lives in plain JavaScript constants — edit, save, reload.
 | `lineOptions` | `js/config.js` | `1, 5, 10, 15, 20, 25, 30` | Selectable payline counts |
 | `betOptions` | `js/config.js` | `1, 2, 3, 5, 10, 20` | Bet per line steps |
 | `SYMBOLS[].pays` | `js/config.js` | original Zeus pays | Line pays per symbol for 2–5 of a kind |
-| `FEATURE.freeSpins` | `js/config.js` | `3: 10, 4: 25, 5: 100` | Free spins per scatter count |
+| `PROFILES` | `js/config.js` | `arcade`; `?classic=1` switches | Feature balance: arcade lands it 1 in 41 for 5 / 10 / 40 spins, classic 1 in 101 for 10 / 25 / 100 |
+| `FEATURE.freeSpins` | `js/config.js` | `3: 5, 4: 10, 5: 40` (classic `10, 25, 100`) | Free spins per scatter count |
 | `PAYLINES` | `js/config.js` | 30 patterns | Row index per reel (0 top, 1 middle, 2 bottom) |
-| `BASE_COUNTS` / `FREE_COUNTS` | `js/config.js` | tuned to 95.96 % | Symbols per reel strip; `*_STACKS` sets stack heights |
+| `BASE_COUNTS` / `FREE_COUNTS` | `js/config.js` | tuned to 95.68 % (classic 95.96 %) | Symbols per reel strip; `*_STACKS` sets stack heights |
 | `vmax`, `accelTime` | `js/reel.js` | `27`, `0.45` | Spin speed (symbols/s) and acceleration time (s) |
 | `overshoot`, `omega`, `zeta` | `js/reel.js` | `0.26`, `22`, `0.42` | Stop bounce: overshoot (symbols), spring frequency, damping |
 | `first`, `gap` (in `spin()`) | `js/game.js` | `1.1`, `0.33` | Seconds until the first reel stops, spacing between reel stops |
@@ -276,6 +279,7 @@ zeus-slot/
     ├── rtp-sim.js        exact RTP from the strips + Monte-Carlo check
     ├── rtp-lib.js        shared RTP maths
     ├── tune.js, tune2.js strip-count scans used to hit the target RTP
+    ├── tune-arcade.js    feature-frequency and award scans behind the arcade profile
     ├── screenshots.mjs   headless-Chrome screenshot generator (no dependencies)
     └── pngalpha.py       alpha-channel report for PNG assets
 ```
@@ -291,8 +295,8 @@ zeus-slot/
 
 | Parameter | Outcome |
 | --- | --- |
-| `?force=feature` | three FEATURE symbols (10 free spins) |
-| `?force=feature5` | five FEATURE symbols (100 free spins) |
+| `?force=feature` | three FEATURE symbols (5 free spins; 10 in the classic profile) |
+| `?force=feature5` | five FEATURE symbols (40 free spins; 100 in the classic profile) |
 | `?force=zeus` | full screen of Zeus — EPIC WIN, 500 × bet |
 | `?force=bigwin` | four Pegasus on the middle line |
 | `?force=wild` | Wilds on reels 2–4 |

@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="A photorealistic, physics-driven, fully sounded recreation of the classic Zeus slot machine in plain HTML5 Canvas and Web Audio.">
 <meta property="og:title" content="ZEUS — web slot machine recreation">
-<meta property="og:description" content="5 reels, 30 lines, 10/25/100 free spins, real reel physics and synthesized sound. Play in the browser.">
+<meta property="og:description" content="5 reels, 30 lines, 5/10/40 free spins, real reel physics and synthesized sound. Play in the browser.">
 <meta property="og:image" content="screenshots/hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
 <body>
 <header>
   <img class="logo" src="../assets/logo.png" alt="ZEUS">
-  <p class="tag">King of the gods &middot; 5 reels &middot; 30 lines &middot; 100 free spins</p>
+  <p class="tag">King of the gods &middot; 5 reels &middot; 30 lines &middot; free spins about every 41 spins</p>
   <a class="cta" href="../index.html">PLAY IN YOUR BROWSER</a>
   <img class="hero" src="screenshots/hero.jpg" alt="The Zeus reels with stacked Zeus, Wild temple and the golden bezel">
 </header>
@@ -50,14 +50,14 @@
   <h2>What it is</h2>
   <p>An unofficial, play-money recreation of the classic WMS <em>Zeus</em> slot machine, written in plain HTML5 Canvas,
     Web Audio and vanilla JavaScript. No frameworks, no build step, no server-side code &mdash; it runs from any static
-    web host or straight from disk. The reel strips reproduce the original paytable and return 95.96% in theory
-    (69.1% base game + 26.9% free spins), with the feature landing about once every 101 spins.</p>
+    web host or straight from disk. The reel strips reproduce the original paytable and return 95.68% in theory
+    (65.5% base game + 30.2% free spins), with the feature landing about once every 41 spins; add ?classic=1 to the address for the original 10/25/100 balance at 95.96%.</p>
 
   <h2>Features</h2>
   <div class="grid">
     <div class="card"><h3>Real reel physics</h3><p>Pull-back wind-up, acceleration, blurred full-speed spin, constant deceleration, an overshoot and a damped-spring bounce onto the stop. Slam the reels with the spin button.</p></div>
     <div class="card"><h3>Anticipation</h3><p>When two FEATURE symbols have landed the remaining reels spin on with a rising drone, heartbeat thumps and a crackling blue glow.</p></div>
-    <div class="card"><h3>Free spins</h3><p>3 / 4 / 5 FEATURE symbols award 10 / 25 / 100 free spins on a storm-lit second reel set with stacked Zeus and stacked Wilds. Retriggers add more.</p></div>
+    <div class="card"><h3>Free spins</h3><p>3 / 4 / 5 FEATURE symbols award 5 / 10 / 40 free spins (10 / 25 / 100 in the classic profile) on a storm-lit second reel set with stacked Zeus and stacked Wilds. Retriggers add more.</p></div>
     <div class="card"><h3>Photoreal presentation</h3><p>Cylindrical drum projection, speed-dependent motion blur, drum lighting and glass reflections, animated winning symbols, payline sweeps, procedural lightning and coin showers.</p></div>
     <div class="card"><h3>Fully synthesized sound</h3><p>Reel whir and ticks, mechanical stops, thunder, harp plucks, bells, brass fanfares, roll-up counters and two looping music beds &mdash; all generated live in Web Audio.</p></div>
     <div class="card"><h3>Verified mathematics</h3><p>An exact RTP calculator and a Monte-Carlo checker ship with the game, so the reel strips can be tuned and audited.</p></div>
@@ -69,7 +69,7 @@
     <figure><img src="screenshots/spin.jpg" alt="Reels spinning"><figcaption>Reels at full speed with motion blur.</figcaption></figure>
     <figure><img src="screenshots/win.jpg" alt="Line win"><figcaption>A line win: non-winning symbols dim, the payline glows and the win rolls up.</figcaption></figure>
     <figure><img src="screenshots/bigwin.jpg" alt="Epic win"><figcaption>A full screen of Zeus pays 500&times; the bet &mdash; EPIC WIN with lightning and coins.</figcaption></figure>
-    <figure><img src="screenshots/feature.jpg" alt="Feature triggered"><figcaption>Three FEATURE symbols trigger 10 free spins.</figcaption></figure>
+    <figure><img src="screenshots/feature.jpg" alt="Feature triggered"><figcaption>Three FEATURE symbols trigger 5 free spins.</figcaption></figure>
     <figure><img src="screenshots/freespins.jpg" alt="Free spins"><figcaption>Free spins under a thunderstorm with the feature meters.</figcaption></figure>
     <figure><img src="screenshots/summary.jpg" alt="Free spins complete"><figcaption>Free spins summary.</figcaption></figure>
     <figure><img src="screenshots/paytable.jpg" alt="Paytable"><figcaption>Pays and rules.</figcaption></figure>

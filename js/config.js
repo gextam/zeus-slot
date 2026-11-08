@@ -4,11 +4,22 @@
    Pays are in multiples of the LINE bet, matching the WMS Zeus paytable:
      Zeus 500/200/50/4, Pegasus 400/150/40, Boat 350/100/30, Helmet 350/100/30,
      Harp 250/100/20, Vase 250/100/20, Gold 200/75/15, Silver 200/75/15,
-     Wreath 150/50/5.  Feature: 3 = 10, 4 = 25, 5 = 100 free spins.
+     Wreath 150/50/5.  Feature: 3 / 4 / 5 scatters award free spins (see PROFILES).
    ========================================================================== */
 (function (root) {
   'use strict';
   const ZEUS = root.ZEUS || (root.ZEUS = {});
+
+  /* Two maths profiles share every pay and strip except the FEATURE symbol:
+       classic  the original balance: feature about 1 in 101 spins, 10 / 25 / 100 free spins, 95.96% return
+       arcade   (default) feature about 1 in 41 spins, 5 / 10 / 40 free spins, 95.68% return
+     Pick classic with ?classic=1 in the browser, or ZEUS_PROFILE=classic for the node tools. */
+  const PROFILES = {
+    classic: { featureCounts: [2, 1, 2, 1, 2], freeSpins: { 3: 10, 4: 25, 5: 100 }, rtp: '95.96', triggerEvery: 101 },
+    arcade: { featureCounts: [2, 2, 3, 2, 2], freeSpins: { 3: 5, 4: 10, 5: 40 }, rtp: '95.68', triggerEvery: 41 }
+  };
+  const wantClassic = (root.location && /[?&]classic=1(&|$)/.test(root.location.search)) || (typeof process !== 'undefined' && process.env && process.env.ZEUS_PROFILE === 'classic');
+  const PROFILE = wantClassic ? 'classic' : 'arcade', PROF = PROFILES[PROFILE];
 
   const SYMBOLS = [
     { id: 'ZEUS',    name: 'Zeus',          pays: { 5: 500, 4: 200, 3: 50, 2: 4 }, file: 'zeus' },
@@ -21,7 +32,7 @@
     { id: 'SILVER',  name: 'Silver Coin',   pays: { 5: 200, 4: 75,  3: 15 },       file: 'silver' },
     { id: 'WREATH',  name: 'Laurel Wreath', pays: { 5: 150, 4: 50,  3: 5 },        file: 'wreath' },
     { id: 'WILD',    name: 'Wild',          wild: true,                            file: 'wild' },
-    { id: 'FEATURE', name: 'Feature',       scatter: true, freeSpins: { 3: 10, 4: 25, 5: 100 }, file: 'feature' }
+    { id: 'FEATURE', name: 'Feature',       scatter: true, freeSpins: PROF.freeSpins,          file: 'feature' }
   ];
   const SYMBOL_BY_ID = {};
   SYMBOLS.forEach(s => { SYMBOL_BY_ID[s.id] = s; });
@@ -104,15 +115,10 @@
   }
 
   /* ---------- reel strip definitions (symbol counts per reel) ---------- */
-  /* Tuned with tools/tune2.js + tools/rtp-sim.js: exact RTP 95.96%
-     (base game 69.1% + free spins 26.9%), feature triggers about 1 in 101 spins. */
-  const BASE_COUNTS = [
-    { ZEUS: 3, PEGASUS: 3, BOAT: 3, HELMET: 3, HARP: 5, VASE: 5, GOLD: 6, SILVER: 6, WREATH: 8, WILD: 1, FEATURE: 2 },
-    { ZEUS: 3, PEGASUS: 3, BOAT: 3, HELMET: 3, HARP: 5, VASE: 5, GOLD: 6, SILVER: 6, WREATH: 8, WILD: 1, FEATURE: 1 },
-    { ZEUS: 3, PEGASUS: 3, BOAT: 3, HELMET: 3, HARP: 5, VASE: 5, GOLD: 6, SILVER: 6, WREATH: 8, WILD: 1, FEATURE: 2 },
-    { ZEUS: 3, PEGASUS: 3, BOAT: 3, HELMET: 3, HARP: 5, VASE: 5, GOLD: 6, SILVER: 6, WREATH: 8, WILD: 1, FEATURE: 1 },
-    { ZEUS: 3, PEGASUS: 3, BOAT: 3, HELMET: 3, HARP: 5, VASE: 5, GOLD: 6, SILVER: 6, WREATH: 8, WILD: 1, FEATURE: 2 }
-  ];
+  /* classic: tuned with tools/tune2.js + tools/rtp-sim.js to exactly 95.96% (base game 69.1% +
+     free spins 26.9%), feature about 1 in 101 spins.  arcade: tools/tune-arcade.js, 95.68%,
+     feature about 1 in 41 spins.  Only the FEATURE count per reel differs between the profiles. */
+  const BASE_COUNTS = PROF.featureCounts.map(f => ({ ZEUS: 3, PEGASUS: 3, BOAT: 3, HELMET: 3, HARP: 5, VASE: 5, GOLD: 6, SILVER: 6, WREATH: 8, WILD: 1, FEATURE: f }));
   const BASE_STACKS = { ZEUS: 3, WILD: 1 };
 
   const FREE_COUNTS = [
@@ -189,14 +195,14 @@
     rules: [
       'All wins pay left to right on adjacent reels beginning with the leftmost reel, except FEATURE.',
       'WILD is wild for all symbols except FEATURE.',
-      'FEATURE symbols pay in any position. 3 = 10 FREE SPINS, 4 = 25 FREE SPINS, 5 = 100 FREE SPINS.',
+      'FEATURE symbols pay in any position. 3 = ' + PROF.freeSpins[3] + ' FREE SPINS, 4 = ' + PROF.freeSpins[4] + ' FREE SPINS, 5 = ' + PROF.freeSpins[5] + ' FREE SPINS.',
       'Free spins are played at the lines and bet of the triggering game.',
       '3 or more FEATURE symbols during free spins award additional free spins.',
       'Only the highest win is paid per line. Line wins are multiplied by the line bet.',
       'Coinciding wins on different lines are added. Malfunction voids all pays and plays.'
     ]
   };
-  ZEUS.RTP = '95.96';
+  ZEUS.RTP = PROF.rtp; ZEUS.PROFILE = PROFILE; ZEUS.PROFILES = PROFILES;
   ZEUS.buildStrips = buildStrips;
   ZEUS.buildStrip = buildStrip;
   ZEUS.evalLine = evalLine;
